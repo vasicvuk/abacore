@@ -17,8 +17,8 @@
     <Product>ABACore</Product>
     <Copyright>Copyright (c) 2024 ABACore Contributors</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/yourusername/alfa-dotnet</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/yourusername/alfa-dotnet</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/vasicvuk/abacore</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/vasicvuk/abacore</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>alfa;xacml;authorization;policy;access-control;abac;pbac;security;aot</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
