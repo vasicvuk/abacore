@@ -1,0 +1,21 @@
+// E-Commerce Microservice - Time-Based Access Policy
+// Defines time-based access control rules
+
+// Time-based access policy
+policy TimeBasedAccessPolicy {
+    apply firstApplicable
+
+    // Allow 24/7 access for support staff
+    rule SupportAlwaysAccess {
+        permit
+        condition subject.role == "support" || subject.role == "admin"
+    }
+
+    // Restrict after-hours access for regular employees
+    rule RestrictAfterHours {
+        deny
+        condition environment.businessHours == false &&
+                  subject.afterHoursApproval != true &&
+                  subject.role != "admin"
+    }
+}

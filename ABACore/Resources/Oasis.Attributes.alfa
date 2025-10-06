@@ -1,0 +1,115 @@
+namespace Oasis.Attributes {
+
+attribute Id {
+    category = "subject"
+    id = "urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+    type = string
+}
+
+attribute Role {
+    category = "subject"
+    id = "urn:oasis:names:tc:xacml:1.0:subject:role"
+    type = string
+}
+
+attribute Name {
+    category = "subject"
+    id = "urn:oasis:names:tc:xacml:1.0:subject:name"
+    type = string
+}
+
+attribute Clearance {
+    category = "subject"
+    id = "urn:oasis:names:tc:xacml:1.0:subject:clearance"
+    type = string
+}
+
+}
+
+namespace Oasis.Attributes.Subject {
+
+attribute Id {
+    category = "subject"
+    id = "urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+    type = string
+}
+
+attribute Role {
+    category = "subject"
+    id = "urn:oasis:names:tc:xacml:1.0:subject:role"
+    type = string
+}
+
+attribute Name {
+    category = "subject"
+    id = "urn:oasis:names:tc:xacml:1.0:subject:name"
+    type = string
+}
+
+attribute Clearance {
+    category = "subject"
+    id = "urn:oasis:names:tc:xacml:1.0:subject:clearance"
+    type = string
+}
+
+}
+
+namespace Oasis.Attributes.Resource {
+
+attribute Id {
+    category = "resource"
+    id = "urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+    type = string
+}
+
+attribute Type {
+    category = "resource"
+    id = "urn:oasis:names:tc:xacml:1.0:resource:resource-type"
+    type = string
+}
+
+attribute Classification {
+    category = "resource"
+    id = "urn:oasis:names:tc:xacml:1.0:resource:classification"
+    type = string
+}
+
+}
+
+namespace Oasis.Attributes.Action {
+
+attribute Id {
+    category = "action"
+    id = "urn:oasis:names:tc:xacml:1.0:action:action-id"
+    type = string
+}
+
+attribute Name {
+    category = "action"
+    id = "urn:oasis:names:tc:xacml:1.0:action:action-name"
+    type = string
+}
+
+}
+
+namespace Oasis.Attributes.Environment {
+
+attribute CurrentTime {
+    category = "environment"
+    id = "urn:oasis:names:tc:xacml:1.0:environment:current-time"
+    type = time
+}
+
+attribute CurrentDate {
+    category = "environment"
+    id = "urn:oasis:names:tc:xacml:1.0:environment:current-date"
+    type = date
+}
+
+attribute CurrentDateTime {
+    category = "environment"
+    id = "urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"
+    type = dateTime
+}
+
+}

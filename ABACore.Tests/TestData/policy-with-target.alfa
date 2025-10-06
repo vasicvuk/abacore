@@ -1,0 +1,8 @@
+// Policy with target matching
+// Allows access only for users with role "admin"
+policy AdminAccessPolicy {
+    rule AdminOnly {
+        target clause role == "admin"
+        permit
+    }
+}

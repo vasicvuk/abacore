@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
+    <IsTrimmable>true</IsTrimmable>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+
+    <!-- NuGet Package Metadata -->
+    <PackageId>ABACore</PackageId>
+    <Title>ABACore - ALFA Policy Engine</Title>
+    <Description>High-performance policy engine for the ALFA (Abbreviated Language for Authorization) language. Provides complete ALFA parsing, Roslyn-based compilation, and runtime evaluation optimized for .NET applications with Native AOT support.</Description>
+    <Authors>ABACore Contributors</Authors>
+    <Company>ABACore</Company>
+    <Product>ABACore</Product>
+    <Copyright>Copyright (c) 2024 ABACore Contributors</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/yourusername/alfa-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yourusername/alfa-dotnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>alfa;xacml;authorization;policy;access-control;abac;pbac;security;aot</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>See CHANGELOG.md for release notes.</PackageReleaseNotes>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+    <PackageReference Include="Antlr4BuildTasks" Version="12.8.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Include="..\Alfa.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <Listener>false</Listener>
+      <Visitor>true</Visitor>
+      <Package>ABACore.Parser</Package>
+    </Antlr4>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\*.alfa" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,6 @@
+// Simple deny policy - denies all access
+policy SimpleDenyPolicy {
+    rule DenyAll {
+        deny
+    }
+}

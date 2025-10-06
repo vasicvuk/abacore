@@ -1,0 +1,81 @@
+namespace Oasis.Functions.String {
+
+function Equal {
+    id = "urn:oasis:names:tc:xacml:1.0:function:string-equal"
+    signatures {
+        (string, string) -> boolean
+    }
+}
+
+function EqualIgnoreCase {
+    id = "urn:oasis:names:tc:xacml:1.0:function:string-equal-ignore-case"
+    signatures {
+        (string, string) -> boolean
+    }
+}
+
+function StartsWith {
+    id = "urn:oasis:names:tc:xacml:1.0:function:string-starts-with"
+    signatures {
+        (string, string) -> boolean
+    }
+}
+
+function EndsWith {
+    id = "urn:oasis:names:tc:xacml:1.0:function:string-ends-with"
+    signatures {
+        (string, string) -> boolean
+    }
+}
+
+function Contains {
+    id = "urn:oasis:names:tc:xacml:1.0:function:string-contains"
+    signatures {
+        (string, string) -> boolean
+    }
+}
+
+function RegexMatch {
+    id = "urn:oasis:names:tc:xacml:1.0:function:string-regex-match"
+    signatures {
+        (string, string) -> boolean
+    }
+}
+
+}
+
+namespace Oasis.Functions.Numeric {
+
+function Add {
+    id = "urn:oasis:names:tc:xacml:1.0:function:integer-add"
+    signatures {
+        (integer, integer) -> integer
+        (double, double) -> double
+    }
+}
+
+function Subtract {
+    id = "urn:oasis:names:tc:xacml:1.0:function:integer-subtract"
+    signatures {
+        (integer, integer) -> integer
+        (double, double) -> double
+    }
+}
+
+function Multiply {
+    id = "urn:oasis:names:tc:xacml:1.0:function:integer-multiply"
+    signatures {
+        (integer, integer) -> integer
+        (double, double) -> double
+    }
+}
+
+function Divide {
+    id = "urn:oasis:names:tc:xacml:1.0:function:integer-divide"
+    signatures {
+        (integer, integer) -> integer
+        (double, double) -> double
+    }
+}
+
+}

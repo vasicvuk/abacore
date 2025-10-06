@@ -1,0 +1,81 @@
+// E-Commerce Microservice - Strict Order Management Policy
+// Uses OASIS standard attributes and custom e-commerce attributes
+
+namespace ECommerce.Orders.Strict {
+
+import Oasis.Attributes.*
+import ECommerce.Attributes.*
+
+// Order Management Policy with strict attribute validation
+policy StrictOrderManagementPolicy {
+    apply denyOverrides
+
+    // Admin can perform any action on any order
+    rule AdminFullAccess {
+        target clause resourceType == "order"
+        permit
+        condition role == "admin"
+    }
+
+    // Order owners can view their own orders
+    rule OwnerReadAccess {
+        target
+            clause resourceType == "order"
+            clause actionId == "read"
+        permit
+        condition userId == ownerId
+    }
+
+    // Customer service can read all orders in their region
+    rule CustomerServiceReadAccess {
+        target
+            clause resourceType == "order"
+            clause actionId == "read"
+        permit
+        condition role == "customer_service" && subjectRegion == resourceRegion
+    }
+
+    // Warehouse staff can update order status to shipped
+    rule WarehouseUpdateShipping {
+        target
+            clause resourceType == "order"
+            clause actionId == "update"
+        permit
+        condition role == "warehouse_staff" &&
+                  status == "processing" &&
+                  department == "warehouse"
+    }
+
+    // Finance department can process refunds for cancelled orders
+    rule FinanceRefundAccess {
+        target
+            clause resourceType == "order"
+            clause actionId == "refund"
+        permit
+        condition role == "finance" &&
+                  department == "finance" &&
+                  status == "cancelled"
+    }
+
+    // Deny high-risk orders modification without senior approval
+    rule DenyHighRiskWithoutApproval {
+        target clause resourceType == "order"
+        deny
+        condition riskLevel == "high" &&
+                  approvalLevel != "senior" &&
+                  (actionId == "update" || actionId == "delete")
+    }
+
+    // Allow managers to cancel orders within their region
+    rule ManagerCancelAccess {
+        target
+            clause resourceType == "order"
+            clause actionId == "cancel"
+        permit
+        condition role == "manager" &&
+                  subjectRegion == resourceRegion &&
+                  totalAmount < 1000.0
+    }
+}
+
+}

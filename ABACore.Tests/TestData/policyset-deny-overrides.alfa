@@ -1,0 +1,15 @@
+// Policy using deny-overrides combining algorithm
+// Any deny rule will override permit rules
+policy DenyOverridesPolicy {
+    apply denyOverrides
+
+    rule AllowNormalUsers {
+        permit
+        condition role == "user"
+    }
+
+    rule BlockSuspendedUsers {
+        deny
+        condition status == "suspended"
+    }
+}

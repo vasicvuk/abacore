@@ -1,0 +1,72 @@
+// E-Commerce Microservice - Combined Policy Set
+// Demonstrates multiple policy sets with different combining algorithms
+
+// Global security policy applied to all resources
+policy GlobalSecurityPolicy {
+    apply denyOverrides
+
+    // Deny access during maintenance window
+    rule DenyDuringMaintenance {
+        deny
+        condition environment.maintenanceMode == true
+    }
+
+    // Deny suspended users
+    rule DenySuspendedUsers {
+        deny
+        condition subject.accountStatus == "suspended"
+    }
+
+    // Deny access from blacklisted IPs
+    rule DenyBlacklistedIPs {
+        deny
+        condition environment.ipBlacklisted == true
+    }
+
+    // Require MFA for sensitive operations
+    rule RequireMFAForSensitive {
+        deny
+        condition (action == "delete" || action == "refund" || action == "transfer") &&
+                  subject.mfaVerified != true
+    }
+}
+
+// Regional access policy
+policy RegionalAccessPolicy {
+    apply permitOverrides
+
+    // GDPR compliance - EU users can only be accessed from EU region
+    rule EUDataResidency {
+        target clause resource.dataRegion == "EU"
+        deny
+        condition subject.accessRegion != "EU" &&
+                  !(subject.role == "admin" && subject.gdprCertified == true)
+    }
+
+    // US data locality
+    rule USDataLocality {
+        target clause resource.dataRegion == "US"
+        deny
+        condition subject.accessRegion != "US" &&
+                  subject.crossRegionApproval != true
+    }
+}
+
+// Time-based access policy
+policy TimeBasedAccessPolicy {
+    apply firstApplicable
+
+    // Allow 24/7 access for support staff
+    rule SupportAlwaysAccess {
+        permit
+        condition subject.role == "support" || subject.role == "admin"
+    }
+
+    // Restrict after-hours access for regular employees
+    rule RestrictAfterHours {
+        deny
+        condition environment.businessHours == false &&
+                  subject.afterHoursApproval != true &&
+                  subject.role != "admin"
+    }
+}

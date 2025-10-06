@@ -1,0 +1,39 @@
+// E-Commerce Microservice - Strict Global Security Policy
+// Uses OASIS standard attributes and custom e-commerce attributes
+
+namespace ECommerce.Security.Strict {
+
+import Oasis.Attributes.*
+import ECommerce.Attributes.*
+
+// Global security policy with strict attribute validation
+policy StrictGlobalSecurityPolicy {
+    apply denyOverrides
+
+    // Deny access during maintenance window
+    rule DenyDuringMaintenance {
+        deny
+        condition maintenanceMode == true
+    }
+
+    // Deny suspended users
+    rule DenySuspendedUsers {
+        deny
+        condition accountStatus == "suspended"
+    }
+
+    // Deny access from blacklisted IPs
+    rule DenyBlacklistedIPs {
+        deny
+        condition ipBlacklisted == true
+    }
+
+    // Require MFA for sensitive operations
+    rule RequireMFAForSensitive {
+        deny
+        condition (actionId == "delete" || actionId == "refund" || actionId == "transfer") &&
+                  mfaVerified != true
+    }
+}
+
+}

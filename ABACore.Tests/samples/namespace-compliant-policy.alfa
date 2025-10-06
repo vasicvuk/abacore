@@ -1,0 +1,34 @@
+namespace Sample.Policy {
+
+import Oasis.Attributes.Subject.*
+import Oasis.Attributes.Resource.*
+import Oasis.Functions.String.*
+
+policy AdminAccess {
+    target clause Subject.Role == "admin" and Resource.Type == "system"
+
+    rule AllowAdmin {
+        permit
+    }
+}
+
+policy DocumentAccess {
+    target clause Resource.Type == "document"
+
+    rule AllowRead {
+        target clause Subject.Role == "user" or Subject.Role == "manager"
+        permit
+    }
+
+    rule AllowWrite {
+        target clause Subject.Role == "manager"
+        condition StringFunctions.Contains(Resource.Classification, "internal")
+        permit
+    }
+
+    rule DenyOthers {
+        deny
+    }
+}
+
+}

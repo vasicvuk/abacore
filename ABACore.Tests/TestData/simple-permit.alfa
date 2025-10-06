@@ -1,0 +1,6 @@
+// Simple permit policy - allows all access
+policy SimplePermitPolicy {
+    rule AllowAll {
+        permit
+    }
+}

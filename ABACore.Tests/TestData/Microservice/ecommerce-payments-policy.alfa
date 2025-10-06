@@ -1,0 +1,75 @@
+// E-Commerce Microservice - Payment Processing Policy
+// Defines access control for payment operations with compliance rules
+
+// Payment Processing Policy with strict security controls
+policy PaymentProcessingPolicy {
+    apply denyOverrides
+
+    // Only payment processors can initiate payments
+    rule PaymentProcessorAccess {
+        target
+            clause resourceType == "payment"
+            clause action == "process"
+        permit
+        condition subject.role == "payment_processor" &&
+                  subject.certified == true &&
+                  subject.department == "payments"
+    }
+
+    // Finance team can view payment records
+    rule FinanceReadAccess {
+        target
+            clause resourceType == "payment"
+            clause action == "read"
+        permit
+        condition subject.department == "finance" || subject.role == "accountant"
+    }
+
+    // Deny international payments without special clearance
+    rule DenyInternationalWithoutClearance {
+        target
+            clause resourceType == "payment"
+            clause action == "process"
+        deny
+        condition resource.paymentType == "international" &&
+                  subject.internationalClearance != true
+    }
+
+    // Senior finance can approve refunds
+    rule SeniorFinanceRefundAccess {
+        target
+            clause resourceType == "payment"
+            clause action == "refund"
+        permit
+        condition subject.role == "senior_finance" &&
+                  subject.approvalLimit >= resource.amount
+    }
+
+    // Deny large payments without dual approval
+    rule DenyLargePaymentsWithoutDualApproval {
+        target clause resourceType == "payment"
+        deny
+        condition resource.amount > 10000 &&
+                  subject.dualApprovalObtained != true
+    }
+
+    // Compliance team can review all payment transactions
+    rule ComplianceReviewAccess {
+        target
+            clause resourceType == "payment"
+            clause action == "review"
+        permit
+        condition subject.department == "compliance" &&
+                  subject.clearanceLevel >= 3
+    }
+
+    // Fraud detection system can flag suspicious payments
+    rule FraudDetectionAccess {
+        target
+            clause resourceType == "payment"
+            clause action == "flag"
+        permit
+        condition subject.systemRole == "fraud_detection" &&
+                  resource.suspicionScore > 70
+    }
+}

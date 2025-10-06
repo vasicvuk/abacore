@@ -1,0 +1,106 @@
+// E-Commerce Microservice - Custom Attribute Definitions
+// Defines only custom (non-OASIS) attributes specific to e-commerce domain
+// OASIS standard attributes are imported from Oasis.Attributes
+
+namespace ECommerce.Attributes {
+
+    // Custom Subject attributes
+    attribute role {
+        category = subject
+        id = "urn:ecommerce:subject:role"
+        type = string
+    }
+
+    attribute userId {
+        category = subject
+        id = "urn:ecommerce:subject:userId"
+        type = string
+    }
+
+    attribute department {
+        category = subject
+        id = "urn:ecommerce:subject:department"
+        type = string
+    }
+
+    attribute subjectRegion {
+        category = subject
+        id = "urn:ecommerce:subject:region"
+        type = string
+    }
+
+    attribute approvalLevel {
+        category = subject
+        id = "urn:ecommerce:subject:approvalLevel"
+        type = string
+    }
+
+    attribute accountStatus {
+        category = subject
+        id = "urn:ecommerce:subject:accountStatus"
+        type = string
+    }
+
+    attribute mfaVerified {
+        category = subject
+        id = "urn:ecommerce:subject:mfaVerified"
+        type = boolean
+    }
+
+    // Custom Resource attributes
+    attribute resourceType {
+        category = resource
+        id = "urn:ecommerce:resource:resourceType"
+        type = string
+    }
+
+    attribute ownerId {
+        category = resource
+        id = "urn:ecommerce:resource:ownerId"
+        type = string
+    }
+
+    attribute resourceRegion {
+        category = resource
+        id = "urn:ecommerce:resource:region"
+        type = string
+    }
+
+    attribute riskLevel {
+        category = resource
+        id = "urn:ecommerce:resource:riskLevel"
+        type = string
+    }
+
+    attribute status {
+        category = resource
+        id = "urn:ecommerce:resource:status"
+        type = string
+    }
+
+    attribute totalAmount {
+        category = resource
+        id = "urn:ecommerce:resource:totalAmount"
+        type = double
+    }
+
+    // Custom Action attributes
+    attribute actionId {
+        category = action
+        id = "urn:ecommerce:action:actionId"
+        type = string
+    }
+
+    // Custom Environment attributes
+    attribute maintenanceMode {
+        category = environment
+        id = "urn:ecommerce:environment:maintenanceMode"
+        type = boolean
+    }
+
+    attribute ipBlacklisted {
+        category = environment
+        id = "urn:ecommerce:environment:ipBlacklisted"
+        type = boolean
+    }
+}

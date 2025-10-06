@@ -1,0 +1,52 @@
+// Complex policy with multiple rules, targets, and conditions
+// Enterprise document access control policy
+policy DocumentAccessPolicy {
+    apply denyOverrides
+
+    // Allow admins unrestricted access
+    rule AdminFullAccess {
+        target clause resourceType == "document"
+        permit
+        condition role == "admin"
+    }
+
+    // Allow managers to read documents in their department
+    rule ManagerDepartmentAccess {
+        target
+            clause resourceType == "document"
+            clause action == "read"
+        permit
+        condition role == "manager" && department == resourceDepartment
+    }
+
+    // Allow employees to read public documents
+    rule EmployeePublicAccess {
+        target
+            clause resourceType == "document"
+            clause action == "read"
+        permit
+        condition role == "employee" && resourceClassification == "public"
+    }
+
+    // Deny access to confidential documents for non-managers
+    rule DenyConfidentialToNonManagers {
+        target clause resourceType == "document"
+        deny
+        condition resourceClassification == "confidential" && !(role == "manager" || role == "admin")
+    }
+
+    // Deny access during maintenance windows
+    rule DenyDuringMaintenance {
+        deny
+        condition maintenanceMode == true
+    }
+
+    // Allow document owners to edit their own documents
+    rule OwnerEditAccess {
+        target
+            clause resourceType == "document"
+            clause action == "edit"
+        permit
+        condition userId == documentOwner
+    }
+}

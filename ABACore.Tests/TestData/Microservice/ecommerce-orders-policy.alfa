@@ -1,0 +1,74 @@
+// E-Commerce Microservice - Order Management Policy
+// Defines access control for order-related operations with custom attributes
+
+// Order Management Policy with multiple rules and conditions
+policy OrderManagementPolicy {
+    apply denyOverrides
+
+    // Admin can perform any action on any order
+    rule AdminFullAccess {
+        target clause resourceType == "order"
+        permit
+        condition subject.role == "admin"
+    }
+
+    // Order owners can view their own orders
+    rule OwnerReadAccess {
+        target
+            clause resourceType == "order"
+            clause action == "read"
+        permit
+        condition subject.userId == resource.ownerId
+    }
+
+    // Customer service can read all orders in their region
+    rule CustomerServiceReadAccess {
+        target
+            clause resourceType == "order"
+            clause action == "read"
+        permit
+        condition subject.role == "customer_service" && subject.region == resource.region
+    }
+
+    // Warehouse staff can update order status to shipped
+    rule WarehouseUpdateShipping {
+        target
+            clause resourceType == "order"
+            clause action == "update"
+        permit
+        condition subject.role == "warehouse_staff" &&
+                  resource.status == "processing" &&
+                  subject.department == "warehouse"
+    }
+
+    // Finance department can process refunds for cancelled orders
+    rule FinanceRefundAccess {
+        target
+            clause resourceType == "order"
+            clause action == "refund"
+        permit
+        condition subject.role == "finance" &&
+                  subject.department == "finance" &&
+                  resource.status == "cancelled"
+    }
+
+    // Deny high-risk orders modification without senior approval
+    rule DenyHighRiskWithoutApproval {
+        target clause resourceType == "order"
+        deny
+        condition resource.riskLevel == "high" &&
+                  subject.approvalLevel != "senior" &&
+                  (action == "update" || action == "delete")
+    }
+
+    // Allow managers to cancel orders within their region
+    rule ManagerCancelAccess {
+        target
+            clause resourceType == "order"
+            clause action == "cancel"
+        permit
+        condition subject.role == "manager" &&
+                  subject.region == resource.region &&
+                  resource.totalAmount < 1000
+    }
+}

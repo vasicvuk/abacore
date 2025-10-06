@@ -1,0 +1,30 @@
+namespace com.example.banking
+
+policy AccountAccessPolicy {
+    apply denyOverrides
+
+    rule AdminAccess {
+        permit
+        target clause subject.role == "admin"
+    }
+
+    rule OwnerAccess {
+        permit
+        target
+            clause subject.userId == resource.accountOwner
+            clause action.type == "view" or action.type == "transfer"
+    }
+
+    rule TellerLimitedAccess {
+        permit
+        target
+            clause subject.role == "teller"
+            clause action.type == "view"
+        condition resource.accountBalance < 100000
+    }
+
+    rule DenyAfterHours {
+        deny
+        condition not (subject.loginTime >= "09:00:00":time and subject.loginTime <= "17:00:00":time)
+    }
+}

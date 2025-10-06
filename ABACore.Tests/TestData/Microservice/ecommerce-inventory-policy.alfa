@@ -1,0 +1,62 @@
+// E-Commerce Microservice - Inventory Management Policy
+// Defines access control for inventory operations with warehouse-based rules
+
+// Inventory Management Policy
+policy InventoryManagementPolicy {
+    apply firstApplicable
+
+    // Emergency access for critical stock levels
+    rule EmergencyStockAccess {
+        target clause resourceType == "inventory"
+        permit
+        condition resource.stockLevel == "critical" &&
+                  (subject.role == "inventory_manager" || subject.role == "admin")
+    }
+
+    // Warehouse staff can update inventory in their warehouse
+    rule WarehouseStaffUpdateAccess {
+        target
+            clause resourceType == "inventory"
+            clause action == "update" || action == "adjust"
+        permit
+        condition subject.role == "warehouse_staff" &&
+                  subject.warehouseId == resource.warehouseId
+    }
+
+    // Inventory managers can perform stock transfers
+    rule InventoryManagerTransferAccess {
+        target
+            clause resourceType == "inventory"
+            clause action == "transfer"
+        permit
+        condition subject.role == "inventory_manager" &&
+                  subject.clearanceLevel >= 2
+    }
+
+    // Auditors can read all inventory records
+    rule AuditorReadAccess {
+        target
+            clause resourceType == "inventory"
+            clause action == "read"
+        permit
+        condition subject.role == "auditor" || subject.department == "compliance"
+    }
+
+    // Deny inventory deletion (only adjustments allowed)
+    rule DenyInventoryDeletion {
+        target
+            clause resourceType == "inventory"
+            clause action == "delete"
+        deny
+    }
+
+    // Procurement can create new inventory records
+    rule ProcurementCreateAccess {
+        target
+            clause resourceType == "inventory"
+            clause action == "create"
+        permit
+        condition subject.department == "procurement" &&
+                  resource.sourceType == "purchase_order"
+    }
+}

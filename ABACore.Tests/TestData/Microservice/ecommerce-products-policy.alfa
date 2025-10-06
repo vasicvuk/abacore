@@ -1,0 +1,62 @@
+// E-Commerce Microservice - Product Catalog Policy
+// Defines access control for product management with category-based rules
+
+// Product Catalog Management Policy
+policy ProductCatalogPolicy {
+    apply permitOverrides
+
+    // Admin can manage all products
+    rule AdminFullAccess {
+        target clause resourceType == "product"
+        permit
+        condition subject.role == "admin"
+    }
+
+    // Product managers can create and update products in their category
+    rule ProductManagerAccess {
+        target
+            clause resourceType == "product"
+            clause action == "create" || action == "update"
+        permit
+        condition subject.role == "product_manager" &&
+                  subject.category == resource.category
+    }
+
+    // Catalog team can read all products
+    rule CatalogTeamReadAccess {
+        target
+            clause resourceType == "product"
+            clause action == "read"
+        permit
+        condition subject.department == "catalog" || subject.department == "marketing"
+    }
+
+    // Pricing team can update prices
+    rule PricingTeamUpdatePrices {
+        target
+            clause resourceType == "product"
+            clause action == "updatePrice"
+        permit
+        condition subject.department == "pricing" &&
+                  subject.role == "pricing_analyst"
+    }
+
+    // Deny deletion of featured products
+    rule DenyFeaturedProductDeletion {
+        target
+            clause resourceType == "product"
+            clause action == "delete"
+        deny
+        condition resource.featured == true
+    }
+
+    // Quality assurance can approve products
+    rule QAApprovalAccess {
+        target
+            clause resourceType == "product"
+            clause action == "approve"
+        permit
+        condition subject.role == "quality_assurance" &&
+                  resource.status == "pending_approval"
+    }
+}
